@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import Header from './components/Header';
 import Main from './pages/Main';
 import Cart from './pages/Cart';
 
@@ -13,12 +14,28 @@ export default function Routes() {
       <Stack.Navigator
         initialRouteName="Main"
         screenOptions={{
-          headerBackTitleVisible: false,
-          headerStyle: {
-            backgroundColor: '#7159C1',
+          header: ({ scene, previous, navigation }) => {
+            const { options } = scene.descriptor;
+            const title =
+              options.headerTitle !== undefined
+                ? options.headerTitle
+                : options.title !== undefined
+                ? options.title
+                : scene.route.name;
+
+            return <Header />;
           },
-          headerTintColor: '#FFF',
+          cardStyle: {
+            backgroundColor: '#333',
+          },
         }}
+        // screenOptions={{
+        //   headerBackTitleVisible: false,
+        //   headerStyle: {
+        //     backgroundColor: '#7159C1',
+        //   },
+        //   headerTintColor: '#FFF',
+        // }}
       >
         <Stack.Screen
           name="Main"
