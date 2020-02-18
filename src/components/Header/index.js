@@ -1,20 +1,23 @@
 import React from 'react';
-import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImgLogo from '../../assets/logo.png';
 
-import { Container, Logo, TotalItems, TotalText } from './styles';
+import { Container, Logo, Cart, Total, TotalText } from './styles';
 
-export default function Header() {
+export default function Header({ navigation }) {
+  function handleNavigateCart() {
+    navigation.navigate('Cart', null);
+  }
+
   return (
     <Container>
       <Logo source={ImgLogo} />
-      <View>
+      <Cart onPress={handleNavigateCart}>
         <Icon name="shopping-basket" size={24} color="#FFF" />
-        <TotalItems>
+        <Total>
           <TotalText>1</TotalText>
-        </TotalItems>
-      </View>
+        </Total>
+      </Cart>
     </Container>
   );
 }

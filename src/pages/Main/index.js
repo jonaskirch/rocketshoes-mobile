@@ -36,7 +36,7 @@ export default class Main extends Component {
 
   handleAddCart = product => {
     const { navigation } = this.props;
-    navigation.navigate('Cart', product);
+    navigation.navigate('Cart', { product });
   };
 
   render() {

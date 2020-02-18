@@ -48,6 +48,11 @@ export default class Cart extends Component {
 
   render() {
     const { products } = this.state;
+    const { route } = this.props;
+    const product = route.params
+      ? route.params.product || 'no product'
+      : 'no product';
+    console.log(product);
 
     return (
       <Container>

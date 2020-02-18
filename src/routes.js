@@ -16,15 +16,15 @@ export default function Routes() {
         screenOptions={{
           headerBackTitleVisible: false,
           header: ({ scene, previous, navigation }) => {
-            const { options } = scene.descriptor;
-            const title =
-              options.headerTitle !== undefined
-                ? options.headerTitle
-                : options.title !== undefined
-                ? options.title
-                : scene.route.name;
+            // const { options } = scene.descriptor;
+            // const title =
+            //   options.headerTitle !== undefined
+            //     ? options.headerTitle
+            //     : options.title !== undefined
+            //     ? options.title
+            //     : scene.route.name;
 
-            return <Header />;
+            return <Header navigation={navigation} />;
           },
           cardStyle: {
             backgroundColor: '#333',
