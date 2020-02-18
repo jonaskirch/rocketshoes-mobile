@@ -3,7 +3,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   height: 100%;
-  padding: 20px;
+  padding: 15px;
 `;
 
 export const Product = styled.View`
@@ -12,7 +12,7 @@ export const Product = styled.View`
   height: 400px;
   width: 250px;
   padding: 10px;
-  margin-right: 20px;
+  margin-right: 10px;
 `;
 
 export const Image = styled.Image`
