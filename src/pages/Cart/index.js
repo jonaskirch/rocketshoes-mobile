@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { formatPrice } from '../../util/format';
+import * as CartActions from '../../store/modules/cart/actions';
 
 import {
   Container,
@@ -16,48 +20,40 @@ import {
   AmountText,
   Total,
   TotalCart,
-  LabelTotal,
+  Label,
   PriceTotal,
   ButtonFinish,
   ButtonFinishText,
+  EmptyContainer,
 } from './styles';
 
-export default class Cart extends Component {
-  state = {
-    products: [
-      {
-        id: 1,
-        title: 'Tênis de Caminhada Leve Confortável',
-        price: 179.9,
-        image:
-          'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg',
-      },
-      {
-        id: 2,
-        title: 'Tênis VR Caminhada Confortável Detalhes Couro Masculino',
-        price: 139.9,
-        image:
-          'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis2.jpg',
-      },
-    ],
+class Cart extends Component {
+  handleDelCart = id => {
+    const { removeFromCart } = this.props;
+    removeFromCart(id);
   };
 
-  handleDelCart = product => {
-    console.tron.log(product);
-  };
+  handleUpdateAmount(id, amount) {
+    const { updateAmountRequest } = this.props;
+    updateAmountRequest(id, amount);
+  }
 
   render() {
-    const { products } = this.state;
-    const { route } = this.props;
-    const product = route.params
-      ? route.params.product || 'no product'
-      : 'no product';
-    console.log(product);
+    const { cart, total } = this.props;
+
+    if (cart.length === 0) {
+      return (
+        <EmptyContainer>
+          <Icon name="remove-shopping-cart" color="#ccc" size={128} />
+          <Label>Nenhum item no carrinho</Label>
+        </EmptyContainer>
+      );
+    }
 
     return (
       <Container>
         <List
-          data={products}
+          data={cart}
           keyExtractor={product => String(product.id)}
           renderItem={({ item }) => (
             <Item>
@@ -65,14 +61,14 @@ export default class Cart extends Component {
                 <Image source={{ uri: item.image }} />
                 <Description>
                   <Title>{item.title}</Title>
-                  <Price>{item.price}</Price>
+                  <Price>{formatPrice(item.price)}</Price>
                 </Description>
-                <View style={{ width: 100 }}>
+                <View style={{ marginRight: 5 }}>
                   <Icon
                     name="delete-forever"
                     color="#7159c1"
                     size={24}
-                    onPress={() => this.handleDelCart(item)}
+                    onPress={() => this.handleDelCart(item.id)}
                   />
                 </View>
               </Product>
@@ -82,18 +78,28 @@ export default class Cart extends Component {
                     name="remove-circle-outline"
                     color="#7159c1"
                     size={24}
+                    onPress={() =>
+                      this.handleUpdateAmount(item.id, item.amount - 1)
+                    }
                   />
-                  <AmountText>5</AmountText>
-                  <Icon name="add-circle-outline" color="#7159c1" size={24} />
+                  <AmountText>{item.amount}</AmountText>
+                  <Icon
+                    name="add-circle-outline"
+                    color="#7159c1"
+                    size={24}
+                    onPress={() =>
+                      this.handleUpdateAmount(item.id, item.amount + 1)
+                    }
+                  />
                 </Amount>
-                <Total>150,00</Total>
+                <Total>{formatPrice(item.price * item.amount)}</Total>
               </Footer>
             </Item>
           )}
         />
         <TotalCart>
-          <LabelTotal>TOTAL</LabelTotal>
-          <PriceTotal>R$ 1500,00</PriceTotal>
+          <Label>TOTAL</Label>
+          <PriceTotal>{total}</PriceTotal>
         </TotalCart>
         <ButtonFinish>
           <ButtonFinishText>FINALIZAR PEDIDO</ButtonFinishText>
@@ -102,3 +108,18 @@ export default class Cart extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  cart: state.cart,
+  total: formatPrice(
+    state.cart.reduce(
+      (total, product) => (total += product.price * product.amount),
+      0
+    )
+  ),
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(CartActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

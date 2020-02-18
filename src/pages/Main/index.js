@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { formatPrice } from '../../util/format';
+import * as CartActions from '../../store/modules/cart/actions';
+
 import {
   Container,
-  // List,
   Product,
   Image,
   Title,
@@ -16,7 +19,7 @@ import {
 } from './styles';
 import api from '../../services/api';
 
-export default class Main extends Component {
+class Main extends Component {
   state = {
     products: [],
   };
@@ -34,12 +37,13 @@ export default class Main extends Component {
     });
   }
 
-  handleAddCart = product => {
-    const { navigation } = this.props;
-    navigation.navigate('Cart', { product });
+  handleAddCart = id => {
+    const { addToCartRequest } = this.props;
+    addToCartRequest(id);
   };
 
   render() {
+    const { amount } = this.props;
     const { products } = this.state;
     return (
       <Container>
@@ -52,10 +56,10 @@ export default class Main extends Component {
               <Image source={{ uri: item.image }} />
               <Title>{item.title}</Title>
               <Price>{item.priceFormated}</Price>
-              <Button onPress={() => this.handleAddCart(item)}>
+              <Button onPress={() => this.handleAddCart(item.id)}>
                 <ButtonIcon>
                   <Icon name="add-shopping-cart" color="#fff" size={24} />
-                  <IconText>1</IconText>
+                  <IconText>{amount[item.id] || '0'}</IconText>
                 </ButtonIcon>
                 <ButtonText>ADICIONAR</ButtonText>
               </Button>
@@ -66,3 +70,15 @@ export default class Main extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  amount: state.cart.reduce((amount, product) => {
+    amount[product.id] = product.amount;
+    return amount;
+  }, {}),
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(CartActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

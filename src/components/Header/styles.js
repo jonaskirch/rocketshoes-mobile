@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   background: #000;
@@ -15,8 +14,6 @@ export const Logo = styled.Image.attrs({
   width: 185px;
   height: 24px;
 `;
-
-export const Cart = styled(RectButton)``;
 
 export const Total = styled.View`
   position: absolute;

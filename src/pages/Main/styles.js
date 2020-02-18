@@ -6,12 +6,6 @@ export const Container = styled.View`
   padding: 20px;
 `;
 
-// export const List = styled.FlatList.attrs({
-//   horizontal: true,
-// })`
-//   padding: 20px;
-// `;
-
 export const Product = styled.View`
   background: #fff;
   border-radius: 4px;
@@ -26,7 +20,9 @@ export const Image = styled.Image`
   width: 100%;
 `;
 
-export const Title = styled.Text`
+export const Title = styled.Text.attrs({
+  numberOfLines: 3,
+})`
   color: #666;
   font-size: 18px;
   line-height: 25px;

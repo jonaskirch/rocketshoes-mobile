@@ -8,8 +8,17 @@ export const Container = styled.View`
   padding: 15px;
 `;
 
+export const EmptyContainer = styled.View`
+  background: #fff;
+  border-radius: 4px;
+  margin: 20px;
+  padding: 15px;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const List = styled.FlatList`
-  /* padding: 20px; */
+  height: 70%;
 `;
 
 export const Item = styled.View``;
@@ -19,7 +28,6 @@ export const Product = styled.View`
   align-items: center;
   justify-content: space-between;
   padding: 10px 0;
-  width: 100%;
 `;
 
 export const Image = styled.Image`
@@ -29,12 +37,13 @@ export const Image = styled.Image`
 
 export const Description = styled.View`
   justify-content: space-between;
-  flex-grow: 1;
-  width: 160px;
+  flex: 1;
   margin: 0 10px;
 `;
 
-export const Title = styled.Text`
+export const Title = styled.Text.attrs({
+  numberOfLines: 2,
+})`
   font-size: 14px;
 `;
 
@@ -73,10 +82,10 @@ export const Total = styled.Text`
 export const TotalCart = styled.View`
   justify-content: center;
   align-items: center;
-  height: 150px;
+  height: 20%;
 `;
 
-export const LabelTotal = styled.Text`
+export const Label = styled.Text`
   font-size: 18px;
   color: #666;
 `;
@@ -87,11 +96,12 @@ export const PriceTotal = styled.Text`
 `;
 
 export const ButtonFinish = styled(RectButton)`
-  height: 50px;
+  height: 10%;
   background: #7159c1;
   border-radius: 4px;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 export const ButtonFinishText = styled.Text`
