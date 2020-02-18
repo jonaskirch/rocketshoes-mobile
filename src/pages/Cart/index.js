@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
@@ -27,86 +27,76 @@ import {
   EmptyContainer,
 } from './styles';
 
-class Cart extends Component {
-  handleDelCart = id => {
-    const { removeFromCart } = this.props;
+function Cart({ cart, total, removeFromCart, updateAmountRequest }) {
+  function handleDelCart(id) {
     removeFromCart(id);
-  };
+  }
 
-  handleUpdateAmount(id, amount) {
-    const { updateAmountRequest } = this.props;
+  function handleUpdateAmount(id, amount) {
     updateAmountRequest(id, amount);
   }
 
-  render() {
-    const { cart, total } = this.props;
-
-    if (cart.length === 0) {
-      return (
-        <EmptyContainer>
-          <Icon name="remove-shopping-cart" color="#ccc" size={128} />
-          <Label>Nenhum item no carrinho</Label>
-        </EmptyContainer>
-      );
-    }
-
+  if (cart.length === 0) {
     return (
-      <Container>
-        <List
-          data={cart}
-          keyExtractor={product => String(product.id)}
-          renderItem={({ item }) => (
-            <Item>
-              <Product>
-                <Image source={{ uri: item.image }} />
-                <Description>
-                  <Title>{item.title}</Title>
-                  <Price>{formatPrice(item.price)}</Price>
-                </Description>
-                <View style={{ marginRight: 5 }}>
-                  <Icon
-                    name="delete-forever"
-                    color="#7159c1"
-                    size={24}
-                    onPress={() => this.handleDelCart(item.id)}
-                  />
-                </View>
-              </Product>
-              <Footer>
-                <Amount>
-                  <Icon
-                    name="remove-circle-outline"
-                    color="#7159c1"
-                    size={24}
-                    onPress={() =>
-                      this.handleUpdateAmount(item.id, item.amount - 1)
-                    }
-                  />
-                  <AmountText>{item.amount}</AmountText>
-                  <Icon
-                    name="add-circle-outline"
-                    color="#7159c1"
-                    size={24}
-                    onPress={() =>
-                      this.handleUpdateAmount(item.id, item.amount + 1)
-                    }
-                  />
-                </Amount>
-                <Total>{formatPrice(item.price * item.amount)}</Total>
-              </Footer>
-            </Item>
-          )}
-        />
-        <TotalCart>
-          <Label>TOTAL</Label>
-          <PriceTotal>{total}</PriceTotal>
-        </TotalCart>
-        <ButtonFinish>
-          <ButtonFinishText>FINALIZAR PEDIDO</ButtonFinishText>
-        </ButtonFinish>
-      </Container>
+      <EmptyContainer>
+        <Icon name="remove-shopping-cart" color="#ccc" size={128} />
+        <Label>Nenhum item no carrinho</Label>
+      </EmptyContainer>
     );
   }
+
+  return (
+    <Container>
+      <List
+        data={cart}
+        keyExtractor={product => String(product.id)}
+        renderItem={({ item }) => (
+          <Item>
+            <Product>
+              <Image source={{ uri: item.image }} />
+              <Description>
+                <Title>{item.title}</Title>
+                <Price>{formatPrice(item.price)}</Price>
+              </Description>
+              <View style={{ marginRight: 5 }}>
+                <Icon
+                  name="delete-forever"
+                  color="#7159c1"
+                  size={24}
+                  onPress={() => handleDelCart(item.id)}
+                />
+              </View>
+            </Product>
+            <Footer>
+              <Amount>
+                <Icon
+                  name="remove-circle-outline"
+                  color="#7159c1"
+                  size={24}
+                  onPress={() => handleUpdateAmount(item.id, item.amount - 1)}
+                />
+                <AmountText>{item.amount}</AmountText>
+                <Icon
+                  name="add-circle-outline"
+                  color="#7159c1"
+                  size={24}
+                  onPress={() => handleUpdateAmount(item.id, item.amount + 1)}
+                />
+              </Amount>
+              <Total>{formatPrice(item.price * item.amount)}</Total>
+            </Footer>
+          </Item>
+        )}
+      />
+      <TotalCart>
+        <Label>TOTAL</Label>
+        <PriceTotal>{total}</PriceTotal>
+      </TotalCart>
+      <ButtonFinish>
+        <ButtonFinishText>FINALIZAR PEDIDO</ButtonFinishText>
+      </ButtonFinish>
+    </Container>
+  );
 }
 
 const mapStateToProps = state => ({

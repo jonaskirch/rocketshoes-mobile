@@ -16,67 +16,16 @@ export default function Routes() {
         screenOptions={{
           headerBackTitleVisible: false,
           header: ({ scene, previous, navigation }) => {
-            // const { options } = scene.descriptor;
-            // const title =
-            //   options.headerTitle !== undefined
-            //     ? options.headerTitle
-            //     : options.title !== undefined
-            //     ? options.title
-            //     : scene.route.name;
-
             return <Header navigation={navigation} />;
           },
           cardStyle: {
             backgroundColor: '#333',
           },
         }}
-        // screenOptions={{
-        //   headerBackTitleVisible: false,
-        //   headerStyle: {
-        //     backgroundColor: '#7159C1',
-        //   },
-        //   headerTintColor: '#FFF',
-        // }}
       >
-        <Stack.Screen
-          name="Main"
-          component={Main}
-          // options={{ title: 'My app' }}
-        />
-        <Stack.Screen
-          name="Cart"
-          component={Cart}
-          // initialParams={{ user: 'me' }}
-        />
+        <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="Cart" component={Cart} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-// import { createAppContainer } from 'react-navigation';
-// import { createStackNavigator } from 'react-navigation-stack';
-
-// import Main from './pages/Main';
-// import Cart from './pages/Cart';
-
-// const Routes = createAppContainer(
-//   createStackNavigator(
-//     {
-//       Main,
-//       User,
-//       Repository,
-//     },
-//     {
-//       headerLayoutPreset: 'center',
-//       defaultNavigationOptions: {
-//         headerBackTitleVisible: false,
-//         headerStyle: {
-//           backgroundColor: '#7159C1',
-//         },
-//         headerTintColor: '#FFF',
-//       },
-//     }
-//   )
-// );
-
-// export default Routes;
