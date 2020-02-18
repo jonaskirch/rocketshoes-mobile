@@ -14,6 +14,7 @@ export default function Routes() {
       <Stack.Navigator
         initialRouteName="Main"
         screenOptions={{
+          headerBackTitleVisible: false,
           header: ({ scene, previous, navigation }) => {
             const { options } = scene.descriptor;
             const title =
