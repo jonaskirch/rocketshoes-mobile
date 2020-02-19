@@ -1,12 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RectButton } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImgLogo from '../../assets/logo.png';
 
 import { Container, Logo, Total, TotalText } from './styles';
 
-function Header({ navigation, amount }) {
+export default function Header({ navigation }) {
+  const amount = useSelector(state => state.cart.length);
+
   function handleNavigateCart() {
     navigation.navigate('Cart', null);
   }
@@ -29,9 +31,3 @@ function Header({ navigation, amount }) {
     </Container>
   );
 }
-
-const mapStateToProps = state => ({
-  amount: state.cart.length,
-});
-
-export default connect(mapStateToProps)(Header);
